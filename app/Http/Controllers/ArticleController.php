@@ -10,10 +10,24 @@ class ArticleController extends Controller
     /**
      * Display a listing of articles.
      */
-    public function index()
+    // public function index()
+    // {
+    //     $featuredArticle = Article::where('published', true)->latest()->first();
+    //     $articles = Article::where('published', true)->latest()->paginate(9);
+    //     return view('articles.index', compact('articles', 'featuredArticle'));
+    // }
+    public function index(Request $request)
     {
-        $featuredArticle = Article::where('published', true)->latest()->first();
-        $articles = Article::where('published', true)->latest()->paginate(9);
+        $query = Article::where('published', 1);
+
+        if ($request->search) {
+            $query->where('title', 'like', '%' . $request->search . '%')
+                ->orWhere('content', 'like', '%' . $request->search . '%');
+        }
+
+        $articles = $query->latest()->paginate(9);
+        $featuredArticle = Article::where('published', 1)->latest()->first();
+
         return view('articles.index', compact('articles', 'featuredArticle'));
     }
     
@@ -37,6 +51,7 @@ class ArticleController extends Controller
         $article->author = $request->author;
         $article->slug = \Str::slug($request->title);
         $article->published = $request->published ?? true;
+        $article->user_id = auth()->id(); // ربط المقال بالمستخدم الحالي
         
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('articles', 'public');
@@ -55,11 +70,17 @@ class ArticleController extends Controller
     
     public function edit(Article $article)
     {
+        // Check if user can edit the article
+        $this->authorize('update', $article);
+        
         return view('articles.edit', compact('article'));
     }
     
     public function update(Request $request, Article $article)
     {
+        // Check if user can update the article
+        $this->authorize('update', $article);
+        
         $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
@@ -85,6 +106,9 @@ class ArticleController extends Controller
     
     public function destroy(Article $article)
     {
+        // Check if user can delete the article
+        $this->authorize('delete', $article);
+        
         $article->delete();
         
         return redirect()->route('articles.index')->with('success', 'تم حذف المقال بنجاح');

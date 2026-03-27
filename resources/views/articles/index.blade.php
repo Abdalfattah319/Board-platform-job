@@ -4,12 +4,28 @@
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold text-gray-900">المقالات</h1>
             @auth
+            @can('create', App\Models\Article::class)
             <x-primary-button>
                 <a href="{{ route('articles.create') }}">مقال جديد</a>
             </x-primary-button>
+            @endcan
             @endauth
         </div>
     </x-slot>
+    <form method="GET" action="{{ route('articles.index') }}" class="mb-6">
+    <div class="flex gap-2">
+        <input 
+            type="text" 
+            name="search" 
+            placeholder="ابحث عن مقال..." 
+            value="{{ request('search') }}"
+            class="w-full px-4 py-2 border rounded-lg"
+        >
+        <button class="bg-indigo-600 text-white px-4 py-2 rounded-lg">
+            بحث
+        </button>
+    </div>
+</form>
 
     <div class="py-6">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -55,44 +71,68 @@
             @endif
 
             <!-- Articles Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                 @forelse($articles as $article)
-                    <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 overflow-hidden fade-in-up">
+                    <div class="bg-white rounded-xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-all duration-300 overflow-hidden fade-in-up">
                         @if($article->image)
-                            <img class="h-48 w-full object-cover" 
+                            <img class="h-40 w-full object-cover" 
                                  src="{{ asset('storage/' . $article->image) }}" 
                                  alt="{{ $article->title }}">
                         @else
-                            <div class="h-48 w-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                                <span class="text-white text-4xl">📝</span>
+                            <div class="h-40 w-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                                <span class="text-white text-3xl">📝</span>
                             </div>
                         @endif
                         
-                        <div class="p-6">
-                            <div class="flex items-center mb-3">
-                                <div class="h-8 w-8 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
-                                    <span class="text-white text-sm font-bold">
+                        <div class="p-4">
+                            <div class="flex items-center mb-2">
+                                <div class="h-6 w-6 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                                    <span class="text-white text-xs font-bold">
                                         {{ substr($article->author, 0, 1) }}
                                     </span>
                                 </div>
-                                <span class="text-sm text-gray-500 mr-2">{{ $article->author }}</span>
+                                <span class="text-xs text-gray-500 mr-2">{{ $article->author }}</span>
                             </div>
                             
-                            <h3 class="text-lg font-bold text-gray-900 mb-2">
+                            <h3 class="text-sm font-bold text-gray-900 mb-2">
                                 <a href="{{ route('articles.show', $article) }}" class="hover:text-indigo-600 transition-colors">
                                     {{ $article->title }}
                                 </a>
                             </h3>
                             
-                            <p class="text-gray-600 text-sm line-clamp-3 mb-4">
-                                {{ Str::limit($article->content, 120) }}
+                            <p class="text-gray-600 text-xs line-clamp-2 mb-3">
+                                {{ Str::limit($article->content, 80) }}
                             </p>
                             
-                            <div class="flex items-center justify-between text-sm text-gray-500">
+                            <div class="flex items-center justify-between text-xs text-gray-500">
                                 <time datetime="{{ $article->created_at->format('Y-m-d') }}">
                                     {{ $article->created_at->diffForHumans() }}
                                 </time>
-                                <span>{{ ceil(strlen($article->content) / 200) }} دقيقة قراءة</span>
+                                <span>{{ ceil(strlen($article->content) / 200) }} دقيقة</span>
+                            </div>
+                            
+                            <!-- Likes Section -->
+                            <div class="flex items-center justify-between text-xs text-gray-500 mt-3 pt-3 border-t border-gray-100">
+                                <span>{{ $article->likes->count() ?? 0 }} ❤️</span>
+
+                                @auth
+                                    @if($article->isLikedByUser())
+                                        <form method="POST" action="{{ route('articles.unlike', $article) }}" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-500 hover:text-red-600 transition-colors text-xs">
+                                                💔 إلغاء
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form method="POST" action="{{ route('articles.like', $article) }}" class="inline">
+                                            @csrf
+                                            <button type="submit" class="text-red-500 hover:text-red-600 transition-colors text-xs">
+                                                ❤️ إعجاب
+                                            </button>
+                                        </form>
+                                    @endif
+                                @endauth
                             </div>
                         </div>
                     </div>
@@ -102,9 +142,15 @@
                         <h3 class="text-xl font-bold text-gray-900 mb-2">لا توجد مقالات</h3>
                         <p class="text-gray-600 mb-8">كن أول من يضيف مقالاً جديداً</p>
                         @auth
+                        @can('create', \App\Models\Article::class)
                         <x-primary-button>
                             <a href="{{ route('articles.create') }}">إضافة مقال</a>
                         </x-primary-button>
+                        @else
+                        <x-primary-button disabled>
+                            <span>يجب تسجيل الدخول لإضافة مقال</span>
+                        </x-primary-button>
+                        @endcan
                         @endauth
                     </div>
                 @endforelse

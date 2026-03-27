@@ -49,6 +49,11 @@ Route::middleware('auth')->group(function () {
 Route::patch('/applications/{application}/status/{status}', [ApplicationsController::class, 'updateStatus'])->name('applications.updateStatusRoute');
 
 Route::resource('articles', ArticleController::class)->middleware('auth'); 
+
+// Likes routes
+Route::post('/articles/{article}/like', 'App\Http\Controllers\LikesController@like')->name('articles.like')->middleware('auth');
+Route::delete('/articles/{article}/unlike', 'App\Http\Controllers\LikesController@unlike')->name('articles.unlike')->middleware('auth');
+
 Route::resource('saved-jobs', SavedJobController::class)->middleware('auth');
 Route::delete('/saved-jobs/by-job/{jobId}', [SavedJobController::class, 'destroyByJob'])->name('saved-jobs.destroy-by-job');
 Route::resource('job-alerts', JobAlertController::class)->middleware('auth');
