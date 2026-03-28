@@ -39,8 +39,5 @@ class LikesController extends Controller
         return back()->with('success', 'تم إلغاء الإعجاب');
     }
 
-    public function store(Rrequest $request)
-    {
-        return "Abdalfattah";
-    }
+   
 }
