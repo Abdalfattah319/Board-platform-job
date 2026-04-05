@@ -125,4 +125,19 @@ class ArticleController extends Controller
         
         return view('articles.index', compact('articles', 'query'));
     }
+    public function like(Article $article)
+    {
+        $article->likes()->firstOrCreate([
+            'user_id' => auth()->id()
+        ]);
+
+        return back();
+    }
+
+    public function unlike(Article $article)
+    {
+        $article->likes()->where('user_id', auth()->id())->delete();
+
+        return back();
+    }
 }
