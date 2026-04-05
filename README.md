@@ -170,9 +170,8 @@ php artisan serve
 
 للمزيد من المعلومات أو الدعم الفني، تواصل معنا عبر:
 
-- 📧 Email: support@example.com
-- 🌐 Website: example.com
-- 💬 Discord: [Join our community](https://discord.gg/example)
+- 📧 Email: alkordia51@gmail.com
+  
 
 ## 📄 الترخيص
 
