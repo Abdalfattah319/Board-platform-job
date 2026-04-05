@@ -1,5 +1,5 @@
 # 🚀 Job Board Platform
-
+![Dashboard](https://github.com/Abdalfattah319/Board-platform-job/blob/main/dashboard.png?raw=true)
 منصة وظائف احترافية متكاملة مع نظام إدارة التقديمات والمقالات
 
 ## ✨ المميزات
@@ -170,9 +170,8 @@ php artisan serve
 
 للمزيد من المعلومات أو الدعم الفني، تواصل معنا عبر:
 
-- 📧 Email: support@example.com
-- 🌐 Website: example.com
-- 💬 Discord: [Join our community](https://discord.gg/example)
+- 📧 Email: alkordia51@gmail.com
+  
 
 ## 📄 الترخيص
 
