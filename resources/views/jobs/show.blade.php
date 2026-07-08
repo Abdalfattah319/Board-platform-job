@@ -3,7 +3,7 @@
 @section('content')
 <div class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 py-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+
         <!-- Professional Job Header -->
         <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200 mb-12 relative">
             <!-- Background Pattern -->
@@ -11,7 +11,7 @@
                 <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50"></div>
                 <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-opacity=\"0.1\" fill-rule=\"evenodd\" d=\"M0 0h60v60H0z\"%3E%3C/g%3E%3C/svg%3E'); background-size: 60px 60px;"></div>
             </div>
-            
+
             <!-- Top Gradient Bar -->
             <div class="relative h-3 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
                 <div class="absolute inset-0 bg-white opacity-10"></div>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="relative p-10">
                 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
                     <!-- Company Info -->
@@ -35,10 +35,10 @@
                             <!-- Enhanced Logo Container -->
                             <div class="relative">
                                 <div class="absolute -inset-1 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl opacity-20 group-hover:opacity-30 transition-opacity duration-500"></div>
-                                <img src="{{ $job->company_logo ?? 'https://ui-avatars.com/api/?name=' . urlencode(optional($job->company)->name ?? $job->user->name) }}" 
-                                     alt="{{ optional($job->company)->name ?? $job->user->name }}" 
+                                <img src="{{ $job->company_logo ?? 'https://ui-avatars.com/api/?name=' . urlencode(optional($job->company)->name ?? $job->user->name) }}"
+                                     alt="{{ optional($job->company)->name ?? $job->user->name }}"
                                      class="relative w-24 h-24 rounded-3xl object-cover border-4 border-white shadow-2xl group-hover:scale-105 transition-transform duration-500">
-                                
+
                                 <!-- Enhanced Status Indicator -->
                                 @if($job->is_active)
                                     <div class="absolute -bottom-3 -right-3 w-8 h-8 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full border-4 border-white flex items-center justify-center shadow-lg animate-pulse">
@@ -51,12 +51,12 @@
                                 @endif
                             </div>
                         </div>
-                        
+
                         <div class="flex-1">
                             <h1 class="text-4xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3 leading-tight">
                                 {{ $job->title }}
                             </h1>
-                            
+
                             <div class="flex flex-wrap items-center gap-4 text-gray-700">
                                 <span class="text-xl font-medium flex items-center gap-2">
                                     <i class="fas fa-building text-blue-500"></i>
@@ -72,7 +72,7 @@
                                     <i class="fas fa-briefcase ml-2"></i>
                                     {{ $job->type_arabic }}
                                 </span>
-                                
+
                                 @if ($job->created_at > now()->subDays(7))
                                     <span class="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-700 border border-green-200 text-sm font-bold animate-pulse">
                                         <i class="fas fa-star ml-2"></i>
@@ -100,10 +100,10 @@
                                                 {{ $isSaved
                                                     ? 'bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white border-yellow-400 shadow-2xl shadow-yellow-300 hover:shadow-3xl hover:shadow-yellow-400'
                                                     : 'bg-white text-gray-700 border-gray-300 hover:border-blue-400 hover:bg-blue-50 hover:text-blue-700' }}">
-                                            
+
                                             <!-- Background Ripple Effect -->
                                             <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-20 transition-opacity duration-500 overflow-hidden"></div>
-                                            
+
                                             <!-- Icon Container -->
                                             <div class="relative flex items-center">
                                                 <div class="icon-wrapper relative">
@@ -115,7 +115,7 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round"
                                                               d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-4-7 4V5z"/>
                                                     </svg>
-                                                    
+
                                                     <!-- Enhanced Particle Effects for Saved State -->
                                                     @if($isSaved)
                                                         <div class="absolute inset-0 pointer-events-none">
@@ -127,9 +127,9 @@
                                                         </div>
                                                     @endif
                                                 </div>
-                                                
+
                                                 <span class="relative z-10 text-base font-medium">{{ $isSaved ? 'محفوظة' : 'حفظ الوظيفة' }}</span>
-                                                
+
                                                 <!-- Enhanced Loading Spinner -->
                                                 <div class="loading-spinner hidden ml-3">
                                                     <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
@@ -138,12 +138,12 @@
                                                     </svg>
                                                 </div>
                                             </div>
-                                            
+
                                             <!-- Enhanced Shine Effect -->
                                             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-all duration-1000"></div>
                                         </button>
                                     </form>
-                                    
+
                                     <!-- Enhanced Professional Tooltip -->
                                     <div class="absolute bottom-full right-0 mb-4 px-6 py-3 bg-gray-900 text-white text-sm rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none whitespace-nowrap transform translate-y-4 group-hover:translate-y-0 z-[9999] shadow-2xl">
                                         <div class="flex items-center gap-3">
@@ -173,7 +173,7 @@
                                     طلبات التقديم
                                 </a>
 
-                                <a href="{{ route('jobs.edit', $job) }}"
+                                <a href="{{route('jobs.edit', $job) }}"
                                    class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white font-bold rounded-2xl hover:from-amber-600 hover:via-orange-600 hover:to-red-600 transition-all duration-500 hover:shadow-2xl hover:scale-105">
                                     <i class="fas fa-edit ml-3"></i>
                                     تعديل
@@ -257,35 +257,35 @@
                         <i class="fas fa-info-circle text-blue-500"></i>
                         معلومات الوظيفة
                     </h3>
-                    
+
                     <div class="space-y-4">
                         <div class="flex justify-between items-center py-3 border-b border-gray-100">
                             <span class="text-gray-600 font-medium">الشركة</span>
                             <span class="text-gray-900 font-semibold">{{ optional($job->company)->name ?? $job->user->name }}</span>
                         </div>
-                        
+
                         <div class="flex justify-between items-center py-3 border-b border-gray-100">
                             <span class="text-gray-600 font-medium">القسم</span>
                             <span class="text-gray-900 font-semibold">{{ optional($job->category)->name ?? 'غير محدد' }}</span>
                         </div>
-                        
+
                         <div class="flex justify-between items-center py-3 border-b border-gray-100">
                             <span class="text-gray-600 font-medium">نوع الوظيفة</span>
                             <span class="text-gray-900 font-semibold">{{ $job->type_arabic }}</span>
                         </div>
-                        
+
                         <div class="flex justify-between items-center py-3 border-b border-gray-100">
                             <span class="text-gray-600 font-medium">الموقع</span>
                             <span class="text-gray-900 font-semibold">{{ $job->location }}</span>
                         </div>
-                        
+
                         @if($job->experience_level)
                         <div class="flex justify-between items-center py-3 border-b border-gray-100">
                             <span class="text-gray-600 font-medium">مستوى الخبرة</span>
                             <span class="text-gray-900 font-semibold">{{ $job->experience_level }}</span>
                         </div>
                         @endif
-                        
+
                         @if($job->salary_min || $job->salary_max)
                         <div class="flex justify-between items-center py-3 border-b border-gray-100">
                             <span class="text-gray-600 font-medium">الراتب</span>
@@ -301,17 +301,17 @@
                             </span>
                         </div>
                         @endif
-                        
+
                         <div class="flex justify-between items-center py-3 border-b border-gray-100">
                             <span class="text-gray-600 font-medium">تاريخ النشر</span>
                             <span class="text-gray-900 font-semibold">{{ $job->created_at->format('Y-m-d') }}</span>
                         </div>
-                        
+
                         <div class="flex justify-between items-center py-3">
                             <span class="text-gray-600 font-medium">الحالة</span>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold
-                                {{ $job->is_active 
-                                    ? 'bg-green-100 text-green-700 border border-green-200' 
+                                {{ $job->is_active
+                                    ? 'bg-green-100 text-green-700 border border-green-200'
                                     : 'bg-gray-100 text-gray-700 border border-gray-200' }}">
                                 <i class="fas fa-{{ $job->is_active ? 'check' : 'pause' }} ml-2"></i>
                                 {{ $job->is_active ? 'نشطة' : 'غير نشطة' }}
@@ -480,15 +480,15 @@ document.addEventListener('DOMContentLoaded', function() {
     if (saveForm) {
         saveForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
+
             const btn = this.querySelector('.save-job-btn');
             const jobId = {{ $job->id }};
             const isCurrentlySaved = btn.classList.contains('saved');
-            
+
             // Show loading state
             btn.classList.add('loading');
             btn.disabled = true;
-            
+
             // Send AJAX request
             fetch(`/saved-jobs`, {
                 method: 'POST',
@@ -505,7 +505,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (data.success) {
                     btn.classList.remove('loading');
                     btn.classList.add('success');
-                    
+
                     if (isCurrentlySaved) {
                         // Unsave logic
                         btn.classList.remove('saved');
@@ -521,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             message: 'يمكنك الوصول لها من لوحة التحكم'
                         });
                     }
-                    
+
                     // Remove success animation after completion
                     setTimeout(() => btn.classList.remove('success'), 600);
                 } else {

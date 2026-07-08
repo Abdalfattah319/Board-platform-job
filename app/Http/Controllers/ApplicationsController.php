@@ -100,7 +100,7 @@ class ApplicationsController extends Controller
         $status = $request->input('status');
         
         // التحقق من أن الحالة صالحة
-        $validStatuses = ['applied', 'under_review', 'shortlisted', 'rejected', 'hired'];
+        $validStatuses = ['accepted', 'rejected', 'applied', 'pending'];
         
         if (!in_array($status, $validStatuses)) {
             return back()->with('error', 'حالة غير صالحة');

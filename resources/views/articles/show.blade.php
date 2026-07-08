@@ -4,7 +4,6 @@
         <div class="flex justify-between items-center">
             <h1 class="text-2xl font-bold text-gray-900">{{ $article->title }}</h1>
             @auth
-            @can('update', $article)
             <div class="space-x-2 space-x-reverse">
                 <x-secondary-button>
                     <a href="{{ route('articles.edit', $article) }}">تعديل</a>
@@ -17,7 +16,6 @@
                     </button>
                 </form>
             </div>
-            @endcan
             @endauth
         </div>
     </x-slot>
@@ -84,73 +82,13 @@
                             </time>
                         </div>
                     </div>
-                    
-                    <!-- Likes Section -->
-                    <div class="mt-6 pt-6 border-t border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-2 space-x-reverse">
-                                <span class="text-lg font-semibold text-gray-900">
-                                    {{ $article->likes->count() ?? 0 }}
-                                </span>
-                                <span class="text-red-500">❤️</span>
-                                <span class="text-sm text-gray-500">
-                                    {{ $article->likes->count() == 1 ? 'إعجاب' : 'إعجابات' }}
-                                </span>
-                            </div>
-
-                            @auth
-                                @if($article->isLikedByUser())
-                                    <form method="POST" action="{{ route('articles.unlike', $article) }}" class="inline">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
-                                            <i class="fas fa-heart-broken ml-2"></i>
-                                            إلغاء الإعجاب
-                                        </button>
-                                    </form>
-                                @else
-                                    <form method="POST" action="{{ route('articles.like', $article) }}" class="inline">
-                                        @csrf
-                                        <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
-                                            <i class="fas fa-heart ml-2"></i>
-                                            إعجاب
-                                        </button>
-                                    </form>
-                                @endif
-                            @endauth
-                        </div>
-                    </div>
                 </div>
             </article>
 
-            <!-- Action Buttons -->
-            <div class="mt-8 flex justify-center space-x-4 space-x-reverse">
-                <!-- Create New Article Button -->
-                @can('create', \App\Models\Article::class)
-                <x-primary-button>
-                    <a href="{{ route('articles.create') }}" class="flex items-center">
-                        <i class="fas fa-plus ml-2"></i>
-                        مقال جديد
-                    </a>
-                </x-primary-button>
-                @endcan
-                
-                <!-- Update Article Button -->
-                @can('update', $article)
-                    <x-secondary-button>
-                        <a href="{{ route('articles.edit', $article) }}" class="flex items-center">
-                            <i class="fas fa-edit ml-2"></i>
-                            تعديل المقال
-                        </a>
-                    </x-secondary-button>
-                @endcan
-                
-                <!-- Back Button -->
+            <!-- Back Button -->
+            <div class="mt-8 text-center">
                 <x-secondary-button>
-                    <a href="{{ route('articles.index') }}" class="flex items-center">
-                        <i class="fas fa-arrow-right ml-2"></i>
-                        العودة للمقالات
-                    </a>
+                    <a href="{{ route('articles.index') }}">العودة للمقالات</a>
                 </x-secondary-button>
             </div>
         </div>
