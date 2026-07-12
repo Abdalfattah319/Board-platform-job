@@ -1,7 +1,7 @@
 # استخدام نسخة PHP رسمية مدمجة مع Apache ومناسبة للارافيل
 FROM php:8.2-apache
 
-# تثبيت الإضافات والمكتبات اللازمة لتشغيل لارافيل وقاعدة البيانات
+# تثبيت الإضافات والمكتبات اللازمة لتشغيل لارافيل وقاعدة البيانات وتثبيت Node.js
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -9,8 +9,13 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo_mysql gd
+
+# تثبيت Node.js و NPM (مطلوب لتشغيل Vite)
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y openssl nodejs
 
 # تفعيل موديل Re-write الخاص بـ Apache لتوجيه الروابط بشكل صحيح
 RUN a2enmod rewrite
@@ -24,9 +29,13 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 WORKDIR /var/www/html
 COPY . .
 
-# تثبيت Composer والحزم المطلوبة
+# تثبيت Composer والحزم المطلوبة للارافيل
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
+
+# تثبيت حزم الـ NPM وبناء ملفات Vite المجمعة (توليد ملف manifest.json)
+RUN npm install
+RUN npm run build
 
 # إنشاء ملفات قاعدة بيانات SQLite الاحتياطية ومجلدات الكاش لضمان وجودها
 RUN mkdir -p database storage/framework/cache storage/framework/sessions storage/framework/views \
@@ -39,5 +48,5 @@ RUN chown -R www-data:www-data /var/www/html \
 # تحديد المنفذ الافتراضي
 EXPOSE 80
 
-# تنظيف أي كاش قديم متبقي، تشغيل الميجريشن، وبدء تشغيل سيرفر Apache
-CMD php artisan config:clear && php artisan cache:clear && php artisan view:clear && php artisan migrate --force && apache2-foreground
+# تنظيف الكاش القديم وبدء تشغيل سيرفر Apache
+CMD php artisan config:clear && php artisan cache:clear && php artisan view:clear && apache2-foreground
