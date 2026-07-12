@@ -49,4 +49,4 @@ RUN chown -R www-data:www-data /var/www/html \
 EXPOSE 80
 
 # تنظيف الكاش القديم وبدء تشغيل سيرفر Apache
-CMD php artisan config:clear && php artisan cache:clear && php artisan view:clear && apache2-foreground
+CMD php artisan migrate --force && php artisan config:clear && php artisan cache:clear && php artisan view:clear && apache2-foreground
