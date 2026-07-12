@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,8 +19,18 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-        //
+   
+/**
+ * Bootstrap any application services.
+ */
+public function boot(): void
+{
+    // إجبار تشغيل الـ HTTPS في بيئة الإنتاج لإصلاح روابط التصميم Vite
+    if (config('app.env') === 'production') {
+        URL::forceScheme('https');
     }
 }
+        //
+    }
+    
+
