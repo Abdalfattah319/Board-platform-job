@@ -13,6 +13,21 @@ use App\Http\Controllers\SavedJobController;
 use App\Http\Controllers\JobAlertController;
 use App\Http\Controllers\NotificationController;
 
+// ----------------------------------------------------
+// كود الإنقاذ السريع لإنشاء جداول قاعدة البيانات تلقائياً
+// ----------------------------------------------------
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schema;
+
+try {
+    if (!Schema::hasTable('users')) {
+        Artisan::call('migrate', ['--force' => true]);
+    }
+} catch (\Exception $e) {
+    // تجنب انهيار الموقع في حال وجود مشكلة أخرى في السيرفر أثناء الفحص
+}
+// ----------------------------------------------------
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -21,7 +36,7 @@ Route::get('/', function () {
 //     return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
-Route::resource('/dashboard',DashboardController::class)->middleware('auth');
+Route::resource('/dashboard', DashboardController::class)->middleware('auth');
 
 // Routes for different user types
 Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])->name('company.dashboard')->middleware('auth');
@@ -65,7 +80,5 @@ Route::patch('/notifications/{id}/mark-as-read', [NotificationController::class,
 Route::delete('/notifications/destroy-all', [NotificationController::class, 'destroyAll'])->name('notifications.destroy-all');
 Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard')->middleware('auth');
 Route::get('/company/dashboard', [CompanyDashboardController::class, 'index'])->name('company.dashboard')->middleware('auth');
-
-
 
 require __DIR__.'/auth.php';
