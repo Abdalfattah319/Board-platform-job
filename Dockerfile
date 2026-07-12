@@ -28,8 +28,16 @@ COPY . .
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
-# إعطاء الصلاحيات المناسبة لمجلدات التخزين والكاش
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+# إنشاء ملفات قاعدة بيانات SQLite الاحتياطية ومجلدات الكاش لضمان وجودها
+RUN mkdir -p database storage/framework/cache storage/framework/sessions storage/framework/views \
+    && touch database/database.sqlite
+
+# إعطاء الصلاحيات الكاملة لمستخدم Apache (www-data) على كامل ملفات المشروع
+RUN chown -R www-data:www-data /var/www/html \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
 # تحديد المنفذ الافتراضي
 EXPOSE 80
+
+# تنظيف أي كاش قديم متبقي، تشغيل الميجريشن، وبدء تشغيل سيرفر Apache
+CMD php artisan config:clear && php artisan cache:clear && php artisan view:clear && php artisan migrate --force && apache2-foreground
